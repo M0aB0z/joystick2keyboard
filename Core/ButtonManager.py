@@ -4,7 +4,6 @@ import uinput
 
 from Model.Constants import Constants
 
-
 class ButtonManager:
 
     def __init__(self, buttons):
@@ -18,6 +17,8 @@ class ButtonManager:
             uinput.KEY_DOWN,
             uinput.KEY_RIGHT,
             uinput.KEY_LEFT,
+            uinput.KEY_BACKSPACE,
+            uinput.KEY_ESC,
             uinput.KEY_ENTER
         ])
 
@@ -67,8 +68,21 @@ class ButtonManager:
 
             if button.player_idx == 1:
                 self.last_move = button.name
-        else:
+        elif self.last_move != button.name:
+            if button.name == "input_start_btn":
+                print("TAB")
+                self.device.emit_click(uinput.KEY_TAB)
             if button.player_idx == 2:
-                self.device.emit_click(uinput.BTN_LEFT)
-            else:
+                if button.name == "input_a_btn":             #Second Player
+                    print("BTN_LEFT")
+                    self.device.emit_click(uinput.BTN_LEFT)
+            elif button.name == "input_a_btn":                 #First Player
+                print("KEY_ENTER")
                 self.device.emit_click(uinput.KEY_ENTER)
+            elif button.name == "input_b_btn":                  #First Player
+                print("KEY_BACKSPACE")
+                self.device.emit_click(uinput.KEY_BACKSPACE)
+            elif button.name == "input_select_btn":                 #First Player
+                print("KEY_ESCAPE")
+                self.device.emit_click(uinput.KEY_ESC)
+            self.last_move = button.name
